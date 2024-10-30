@@ -1,10 +1,11 @@
-local function getValue(key)
-    print("Accessing key:", key, "of type", type(key))  -- 打印访问的键和类型
-    return key  -- 返回键
-end
+-- 定义一个基础表
+local base = { a = 1, b = 2 }
 
-local myTable = setmetatable({}, { __index = getValue })
+-- 定义一个派生表，并将 base 作为其元表的 __index
+local derived = setmetatable({}, {
+    __index = base  -- 当 derived 中没有找到键时，查找 base
+})
 
--- 确保使用字符串访问
-print(myTable["a"])  -- 访问字符串
-print(myTable["b"])  -- 访问字符串
+print(derived.a)  -- 输出 1，调用了 base 中的值
+print(derived.b)  -- 输出 2，调用了 base 中的值
+print(derived.c)  -- 输出 nil，derived 中没有 c，base 中也没有
